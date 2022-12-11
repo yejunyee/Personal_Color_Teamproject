@@ -33,6 +33,51 @@
 
 ------------------------
 
+### 코드 요약
+1. index.html
+<pre>
+<code>
+<title>Document</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      position: absolute;
+    }
+  </style>
+</code>
+</pre>
+웹 서버를 통해 쉽게 접근하면서 출력되는 사이즈를 html언어로 활용해 조절하였고
+<pre>
+<code>
+<script defer src="face-api.min.js"></script>
+  <script defer src="script.js"></script>
+</code>
+</pre>
+실행 가능한 코드들을 포함시켰다.
+
+2. javascript
+<pre>
+<code>
+Promise.all([
+  faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+  faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+  faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+  faceapi.nets.faceExpressionNet.loadFromUri('/models')
+]).then(startVideo)
+</code>
+</pre>
+얼굴에서 알고 싶은 것을 결정하고 사용 가능한 모델들을 사용하여 원하는 기술을 구현하게끔 만
+
+-----------------------
+
 ### 예상결과
 사람의 얼굴이 인식되고 그 인식된 얼굴의 감정이 출력된다.
 
