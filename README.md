@@ -74,7 +74,37 @@ Promise.all([
 ]).then(startVideo)
 </code>
 </pre>
-얼굴에서 알고 싶은 것을 결정하고 사용 가능한 모델들을 사용하여 원하는 기술을 구현하게끔 만
+얼굴에서 알고 싶은 것을 결정하고 사용 가능한 모델들을 사용하여 원하는 기술을 구현하게끔 만듬
+<pre>
+<code>
+video.addEventListener('play', () => {
+  const canvas = faceapi.createCanvasFromMedia(video)
+  document.body.append(canvas)
+  const displaySize = { width: video.width, height: video.height }
+  faceapi.matchDimensions(canvas, displaySize)
+</code>
+</pre>
+faceapi로 추출할 거를 비디오로 연결하고 캔버스를 만들어 거기에 출력되게 만들고
+출력크기를 조절하였다.
+<pre>
+<code>
+setInterval(async () => {
+    const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+    const resizedDetections = faceapi.resizeResults(detections, displaySize)
+    canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+    faceapi.draw.drawDetections(canvas, resizedDetections)
+</code>
+</pre>
+face.api를 이용해서 얼굴을 인식하게 만들었다 여기서 우리가 구현할려는 기술의 핵심 코드가 있는데
+<pre>
+<code>
+faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
+    faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
+  }, 100)
+</code>
+</pre>
+face.api로 68개의 포인트를 감지하는 얼굴 랜드마크를 계산하고
+인식된 얼굴 표정을 인식해주는 api와 연결하여 원하는 결과를 이끌어냈다.
 
 -----------------------
 
